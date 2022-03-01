@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls', namespace='authentication')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path('auth/', include('djoser.urls.jwt')),
 ]
