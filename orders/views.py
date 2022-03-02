@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from orders.models import Order
-from orders.serializers import OrderCreationSerializer, OrderDetailSerializer, OrderStatusSerializer, UserOrderListSerializer
+from orders.serializers import OrderCreationSerializer, OrderDetailSerializer, OrderStatusSerializer, UserOrdersSerializer
 
 from authentication.models import User
 
@@ -79,12 +79,11 @@ class OrderStatusView(APIView):
 
 
 
+
 class UserOrderListView(APIView):
-    serializer_class = UserOrderListSerializer
-    # serializer_class = OrderDetailSerializer
+    serializer_class = UserOrdersSerializer
 
     def get(self, request, format=None, **kwargs):
         user = User.objects.get(pk=kwargs['user_id'])
-        orders = Order.objects.filter(customer=user)
-        serializer = self.serializer_class(instance=orders, many=True)
+        serializer = self.serializer_class(instance=user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -27,18 +27,17 @@ class OrderStatusSerializer(serializers.ModelSerializer):
 
 
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User 
-        fields = ['id', 'username', 'email', 'phone_number',]
-
-
-
 class UserOrderListSerializer(serializers.ModelSerializer):
-    # orders_made = OrderDetailSerializer(many=True, read_only=True)
-    # customer = UserSerializer(many=True, read_only=True)
-    orders_made = OrderDetailSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
-        fields = ['customer', 'orders_made', 'order_status', 'size', 'quantity']
+        fields = ['order_status', 'size', 'quantity']
+
+
+
+class UserOrdersSerializer(serializers.ModelSerializer):
+    orders = UserOrderListSerializer(many=True, read_only=True, source='order_set')     # source = Order object === order_set
+    class Meta:
+        model = User 
+        fields = ['id', 'username', 'email', 'phone_number', 'orders']
+
