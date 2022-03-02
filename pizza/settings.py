@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "phonenumber_field",     # pip install django-phonenumbers and pip install django-phonenumber-field
     "djoser",
-    'rest_framework.authtoken',
+    "rest_framework.authtoken",
+    "drf_yasg",
 ]
 
 
@@ -70,10 +71,27 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'AUTH_HEADER_TYPES': ('Bearer',),                       # ????
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        # 'Basic': {
+        #     'type': 'basic'
+        # },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+
+}
+
+
+
 
 
 MIDDLEWARE = [
