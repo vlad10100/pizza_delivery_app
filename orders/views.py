@@ -21,14 +21,14 @@ class OrderCreationView(APIView):
     permission_classes=[IsAuthenticated]
 
 
-    @swagger_auto_schema(operation_summary="Get all orders")
+    @swagger_auto_schema(operation_summary="GET all orders")
     def get(self, request, format=None):
         order = Order.objects.all()
         serializer = self.serializer_class(instance=order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-    @swagger_auto_schema(operation_summary="Create an order", request_body=serializer_class)
+    @swagger_auto_schema(operation_summary="CREATE order", request_body=serializer_class)
     def post(self, request):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -49,13 +49,13 @@ class OrderDetailView(APIView):
     permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
 
-    @swagger_auto_schema(operation_summary="Get order's details")
+    @swagger_auto_schema(operation_summary="GET order detail")
     def get(self, request, order_id, format=None):
         order = get_object_or_404(Order, pk=order_id)
         serializer = self.serializer_class(instance=order)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_summary="Update order's detail", request_body=serializer_class)
+    @swagger_auto_schema(operation_summary="UPDATE order detail", request_body=serializer_class)
     def put(self, request, order_id, format=None):
         data = request.data 
         order = get_object_or_404(Order, id=order_id)
@@ -66,7 +66,7 @@ class OrderDetailView(APIView):
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(operation_summary="Delete order")
+    @swagger_auto_schema(operation_summary="DELETE order")
     def delete(self, request, order_id, format=None):
         order = get_object_or_404(Order, pk=order_id)
         if order:
@@ -80,14 +80,14 @@ class OrderStatusView(APIView):
     permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
 
-    @swagger_auto_schema(operation_summary="View an order's status")
+    @swagger_auto_schema(operation_summary="GET order status")
     def get(self, request, order_id, format=None):
         order = get_object_or_404(Order, pk=order_id)
         serializer = self.serializer_class(instance=order)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-    @swagger_auto_schema(operation_summary="Update an order's status", request_body=serializer_class)
+    @swagger_auto_schema(operation_summary="UPDATE order status", request_body=serializer_class)
     def put(self, request, order_id, format=None):
         data = request.data
         order = get_object_or_404(Order, pk=order_id)
@@ -105,7 +105,7 @@ class UserOrderListView(APIView):
     serializer_class = UserOrdersSerializer
     permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
-    @swagger_auto_schema(operation_summary="View orders made by user")
+    @swagger_auto_schema(operation_summary="GET orders made by user")
     def get(self, request, format=None, **kwargs):
         user = User.objects.get(pk=kwargs['user_id'])
         serializer = self.serializer_class(instance=user)
